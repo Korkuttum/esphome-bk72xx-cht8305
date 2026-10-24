@@ -1,0 +1,36 @@
+esphome:
+  name: ir-remote
+  friendly_name: IR Remote
+
+bk72xx:
+  board: cbu
+
+logger:
+
+api:
+  encryption:
+    key: !secret api_key
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+external_components:
+  - source: github://Korkuttum/esphome-bk72xx-cht8305
+    components: [cht8305]
+
+sensor:
+  - platform: cht8305
+    sda_pin: P6
+    scl_pin: P26
+    update_interval: 60s
+    temperature:
+      name: "Temperature"
+      filters:
+        - offset: -2.5   # compensate self-heating, adjust to your device
+    humidity:
+      name: "Humidity"
